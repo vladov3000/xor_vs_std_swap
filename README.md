@@ -2,7 +2,7 @@
 
 There is an [old bit twiddling trick](https://en.wikipedia.org/wiki/XOR_swap_algorithm) that uses XOR to swap two integer values. Theoretically, this optimization saves one register, and on older compilers with worse register allocators, a whole stack allocation.
 
-However, is this trick still relevant today? Modern processors make use of [Tomasulo's algorithm](https://en.wikipedia.org/wiki/Tomasulo%27s_algorithm) to rename registers on the fly and avoid stalls from write after read or write after writer hazards.
+However, is this trick still relevant today? Modern processors make use of [Tomasulo's algorithm](https://en.wikipedia.org/wiki/Tomasulo%27s_algorithm) to rename registers on the fly and avoid stalls from write after read or write after write hazards.
 
 To test the performance of the xor trick, we use a swap-heavy algorithm like bubble-sort. Unfortunately, `clang` is too smart on my machine and compiles both variants of the code to efficiently use the `stp` ([store pair of registers](https://developer.arm.com/documentation/ddi0602/2024-03/Base-Instructions/STP--Store-Pair-of-Registers-)) instruction. The solution is to write inline assembly for this functionality.
 

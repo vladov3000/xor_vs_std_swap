@@ -17,9 +17,11 @@ Anyways, we can now run the algorithm on different length random number arrays t
 
 Below are the results. `std::swap` gets the win by a significant margin even on the relatively small input of 50,000 4-byte integers.
 
-![]("Result.png")
+<p align="center">
+  <img src="https://github.com/vladov3000/xor_vs_std_swap/blob/master/Result.png" />
+</p>
 
-We can disassemble our programs to see what is different:
+We can disassemble our programs to double check the inline assembly is not messing up a compiler optimization:
 
 ```bash
 $ clang -S -DSWAP_FUNCTION=std::swap -O2 main.cpp -o std::swap.s
@@ -97,4 +99,4 @@ The "-S" flag makes clang emit assembly instead of machine code. The relevant di
 
 If you look closely, you will see that there are some renamed registers and labels, but they are almost identical programs with one having some extra xor instructions. In fact, the same `stp` instruction is used, just with a different order of operands.
 
-The conclusion is that you should write the simplest code possible and not waste time including these bit twiddling tricks that only serve to confuse the reader. Modern optimizing compilers don't even emit the right assembly for these snippets. Even embedded processors running code compiled with O0, use scoreboarding or other methods to abstract over registers, so I doubt these benchmark results would differ much by any architecture or processor made in the last decade.
+The conclusion is that you should write the simplest code possible and not waste time including these bit twiddling tricks that only serve to confuse the reader. Modern optimizing compilers don't even emit the right assembly for these snippets. Even embedded processors running code compiled with the lowest optimization level use scoreboarding or other methods to abstract over registers, so I doubt these benchmark results would differ much by any architecture or processor made in the last decade.

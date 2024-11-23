@@ -11,7 +11,7 @@ To test the performance of the xor trick, we use a swap-heavy algorithm like bub
   { asm("eor %0, %1, %0; eor %1, %0, %1; eor %0, %1, %0;" : "+Kr" (x), "+Kr" (y)); }
 ```
 
-Gross. For the uninitiated, `%0` and `%1` refer to the output operands that are specified after the colon. `+Kr (x)` means we want a register ("r") that we can read and write to ("+"), be used with 32-bit logical instructions (`K`), and is where the variable `x` is stored.
+Gross. For the uninitiated, `%0` and `%1` refer to the output operands that are specified after the colon. `+Kr (x)` means we want a register (`r`) that we can read and write to (`+`), be used with 32-bit logical instructions (`K`), and is where the variable `x` is stored.
 
 Anyways, we can now run the algorithm on different length random number arrays to get a result. For random number generation, we read from `/dev/urandom`. This may be slower than reading a small seed for a [pseudo random number generator (PRNG)](https://en.wikipedia.org/wiki/Pseudorandom_number_generator), but it works.
 
